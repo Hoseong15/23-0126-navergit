@@ -6,17 +6,48 @@ $('label').on('click', function(e) {
 
   if($(this).children('.checkbox-img').hasClass('checked')) {
     //checked-img가 checkdd 클래스를 가지고 있을 때 실행 할 코드
-    $(this).children('input[type="checkbox"]'),Attr('checked')
+    $(this).children('input[type="checkbox"]').attr('checked', true)
   } else {
     //checked-img가 checkdd 클래스를 가지고 않을 때 실행 할 코드
-    $(this).children('input[type="checkbox"]'),removeAttr('checked')
+    $(this).children('input[type="checkbox"]').removeAttr('checked')
   }
-})
+});
 
-$("label").click(function() {
-  if($(this).is(":checked")){
-    $(".checkbox-img").attr("checked", true);
-  } else{
-    $(".checkbox-img").attr("checked", false);
+
+//total에 체크하면 모든 agree 체크
+//total에 언체크하면 모든 agree 언체크
+
+$('.total label').on('click', function() {
+  if($(this).find('.checkbox-img').hasClass('checked')) {
+    //모든 .agree라는 클래스를 가진 것들이 체크
+    $('.agree').find('.checkbox-img').addClass('checked');
+    $('.agree').find('input[type="checkbox"]').attr('checked', true)
+  } else {
+    $('.agree').find('.checkbox-img').removeClass('checked');
+    $('.agree').find('input[type="checkbox"]').removeAttr('checked', false )
   }
+});
+
+$('#cancel').on('click', function() {
+  location.href = "http://www.naver.com";
+});
+
+//submit 버튼을 클릭 했을 때 필수동의 사항에 모두 체크했는지 확인
+//모두 체크되어 있으면 통과
+//체크 안된 게 있다면 #red-alert창을 보여주고 전송을 중지
+
+$('#submit').on('click', function(e) {
+  let req = $('.req').length;
+  let chkreq = $('.req .checked').length;
+  let unchk = req - chkreq;
+  if(unchk == 0){
+    $('#form1').submit();
+  } else {
+    //form이 제출되지 못하게 막기
+    e.preventDefault()
+    //#red-alert가 보이게
+    $('#red-alert').attr('style','visibility:visible');
+    $('#red-alert').css('visibility', 'visible');
+  } 
+
 })
